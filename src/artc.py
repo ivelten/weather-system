@@ -48,7 +48,7 @@ class ARTC:
         # baseadas em pontos num universo, ela também não terá boa precisão
         # A precisão da função vai aumentar conforme o número de itens no universo aumentar
         def deltamf(x, a):
-            return fuzz.trimf(x, [0.0, a, 0.0])
+            return fuzz.trimf(x, [a, a, a])
 
         # Funções para o aquecedor
         self._heater['Off']        = deltamf(self._heater.universe, 0.0)
