@@ -43,13 +43,20 @@ class ARTC:
         self._heater  = control.Consequent(control_universe, 'Heater')
         self._chiller = control.Consequent(control_universe, 'Chiller')
 
+        # Cria uma função que simula uma função delta para utilização
+        # Na biblioteca skfuzzy não há uma função delta nativa, e como as funções são
+        # baseadas em pontos num universo, ela também não terá boa precisão
+        # A precisão da função vai aumentar conforme o número de itens no universo aumentar
+        def deltamf(x, a):
+            return fuzz.trimf(x, [0.0, a, 0.0])
+
         # Funções para o aquecedor
-        self._heater['Off']        = fuzz.trimf(self._heater.universe, [0.0, 0.0, 0.0])
+        self._heater['Off']        = deltamf(self._heater.universe, 0.0)
         self._heater['Heat']       = fuzz.trapmf(self._heater.universe, [0.0, 0.0, 0.45, 0.55])
         self._heater['Quick-Heat'] = fuzz.trapmf(self._heater.universe, [0.45, 0.55, 1.0, 1.0])
 
         # Funções para o resfriador
-        self._chiller['Off']         = fuzz.trimf(self._chiller.universe, [0.0, 0.0, 0.0])
+        self._chiller['Off']         = deltamf(self._heater.universe, 0.0)
         self._chiller['Chiller-Fan'] = fuzz.trapmf(self._chiller.universe, [0.0, 0.0, 0.35, 0.45])
         self._chiller['Cool']        = fuzz.trapmf(self._chiller.universe, [0.35, 0.45, 0.65, 0.75])
         self._chiller['Quick-Cool']  = fuzz.trapmf(self._chiller.universe, [0.65, 0.75, 1.0, 1.0])
