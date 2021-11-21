@@ -25,4 +25,4 @@ while True:
     print ("Heater Potency:  {:.0f} %".format(control.heater_potency), end = '\n\n')
 
     # TODO: procurar um aquecedor e refrigerador para testar os resultados
-    time.sleep(10)
+    time.sleep(30)
