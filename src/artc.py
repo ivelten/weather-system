@@ -8,7 +8,7 @@ class ARTC:
     def __init__(self):
 
         # Universo das funções de entrada
-        temp_universe     = np.arange(0.0, 35.0, 0.5)      # Temperatura, em Celsius
+        temp_universe     = np.arange(-30.0, 60.0, 0.5)      # Temperatura, em Celsius
         pressure_universe = np.arange(500.0, 1500.0, 1.0)  # Pressão, em hPa
         humidity_universe = np.arange(0.0, 100.0, 0.5)     # Umidade, em %
 
@@ -18,11 +18,11 @@ class ARTC:
         self._humidity    = control.Antecedent(humidity_universe, 'Humidity')
 
         # Funções para temperatura
-        self._temperature['Freezy'] = fuzz.trapmf(self._temperature.universe, [0.0, 0.0, 9.0, 10.0])
-        self._temperature['Cold']   = fuzz.trapmf(self._temperature.universe, [9.0, 10.0, 13.5, 15])
-        self._temperature['Normal'] = fuzz.trapmf(self._temperature.universe, [13.5, 15.0, 18.5, 20.0])
-        self._temperature['Warm']   = fuzz.trapmf(self._temperature.universe, [18.5, 20.0, 23.5, 25])
-        self._temperature['Hot']    = fuzz.trapmf(self._temperature.universe, [23.5, 25.0, 35.0, 35.0])
+        self._temperature['Freezy'] = fuzz.trapmf(self._temperature.universe, [-30.0, -30.0, -3.0, 0.0])
+        self._temperature['Cold']   = fuzz.trapmf(self._temperature.universe, [-3.0, 0.0, 13.0, 16.0])
+        self._temperature['Normal'] = fuzz.trapmf(self._temperature.universe, [13.0, 16.0, 27.0, 30.0])
+        self._temperature['Warm']   = fuzz.trapmf(self._temperature.universe, [27.0, 30.0, 33.0, 36.0])
+        self._temperature['Hot']    = fuzz.trapmf(self._temperature.universe, [33.0, 40.0, 47.0, 54.0])
 
         # Funções para pressão
         self._pressure['Fall']     = fuzz.trapmf(self._pressure.universe, [500.0, 500.0, 680.0, 700.0])

@@ -4,13 +4,17 @@ import time
 
 control = artc.ARTC()
 bmp280  = iot.BMP280Monitor()
+dht11 = iot.DHT11Monitor()
 
 while True:
 
     # Obtém a temperatura, pressão e umidade
-    temperature = round(bmp280.get_temperature(), 2)
+    humidity, temperature1 = dht11.get_humidity_and_temperature()
+    temperature2 = round(bmp280.get_temperature(), 2)
     pressure = round(bmp280.get_pressure(), 2)
-    humidity = round(75.0, 2) # TODO: ajustar para medir apropriadamente quando o sensor de umidade chegar
+
+    # Usa por padrão a temperatura do DHT11, caso não consiga, usa do BMP280
+    temperature = round((temperature2 if temperature1 is None else temperature1), 2)
 
     # Exibe as medições na tela
     print ("Temperature:     {:.2f} *C".format(temperature))
@@ -24,5 +28,5 @@ while True:
     print ("Chiller Potency: {:.0f} %".format(control.chiller_potency))
     print ("Heater Potency:  {:.0f} %".format(control.heater_potency), end = '\n\n')
 
-    # TODO: procurar um aquecedor e refrigerador para testar os resultados
+    # Espera 30 segundos para continuar atualizando as medidas
     time.sleep(30)
